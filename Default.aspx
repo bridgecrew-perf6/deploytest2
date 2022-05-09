@@ -31,6 +31,7 @@
 
             request.done(function (data) {
                 console.log(data);
+                console.log("1");
             });
         }
     </script>
