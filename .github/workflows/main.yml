@@ -28,10 +28,7 @@ jobs:
       uses: actions/setup-dotnet@v2
       with:
         dotnet-version: 5.0.x
-        
-    - name: Setup MSBuild.exe
-      uses: warrenbuckley/Setup-MSBuild@v1
       
     - name: Build
-      run: msbuild
+      run: C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\MSBuild\Current\Bin\msbuild
     
