@@ -22,20 +22,23 @@ jobs:
       matrix:
         operating-system: [windows-latest]
 
-    steps:
-    - uses: actions/checkout@v3
-    
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v2
-      with:
-        dotnet-version: 5.0.x
+    steps:      
+      - uses: actions/checkout@v3
       
-    - name: NuGet to restore dependencies as well as project-specific tools that are specified in the project file
-      run: nuget restore
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v1
 
-    - name: Add msbuild to PATH
-      uses: microsoft/setup-msbuild@v1.0.2
+      - name: Setup NuGet
+        uses: NuGet/setup-nuget@v1.0.5
+      
+      - name: Navigate to Workspace
+        run: cd $GITHUB_WORKSPACE
 
-    - name: Run msbuild
-      run: msbuild .\TestProject.sln
-    
+      - name: Create Build Directory
+        run: mkdir _build
+  
+      - name: Restore Packages
+        run: nuget restore TestProject.sln
+
+      - name: Build Solution
+        run: msbuild.exe TestProject.sln /nologo /nr:false /p:DeployOnBuild=true /p:DeployDefaultTarget=WebPublish /p:WebPublishMethod=FileSystem /p:DeleteExistingFiles=True /p:platform="Any CPU" /p:configuration="Release" /p:PublishUrl="../_build"
